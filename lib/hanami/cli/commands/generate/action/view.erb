@@ -1,5 +1,15 @@
-module <%= app.classify %>::Views::<%= classified_controller_name %>
-  class <%= action.classify %>
-    include <%= app.classify %>::View
+<%- length = classified_controller_name.split("::").size -%>
+<%- class_level_indentation = " " * (length * 2) -%>
+module <%= app.classify %>
+  module Views
+  <%- classified_controller_name.split("::").each_with_index do |module_name, index| -%>
+    <%= " " * (index * 2) + "module #{module_name}" %>
+  <%- end -%>
+    <%= class_level_indentation + "class #{action.classify}" %>
+      <%= class_level_indentation + "include #{app.classify}::View" %>
+    <%= class_level_indentation + "end" %>
+  <%- classified_controller_name.split("::").each_with_index do |module_name, index| -%>
+    <%= " " * ((length - index - 1) * 2) + "end" %>
+  <%- end -%>
   end
 end
